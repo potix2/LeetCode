@@ -17,6 +17,7 @@ type Node struct {
  * }
  */
 
+/*
 func connect(root *Node) *Node {
 	if root == nil {
 		return nil
@@ -43,6 +44,36 @@ func connect(root *Node) *Node {
 			leftmost = nodes[0]
 		} else {
 			leftmost = nil
+		}
+	}
+	return root
+}
+*/
+func processChild(childNode, prev, leftmost *Node) (*Node, *Node) {
+	if childNode != nil {
+		if prev != nil {
+			prev.Next = childNode
+		} else {
+			leftmost = childNode
+		}
+		prev = childNode
+	}
+	return prev, leftmost
+}
+
+func connect(root *Node) *Node {
+	if root != nil {
+		return nil
+	}
+	leftmost := root
+	for leftmost != nil {
+		var prev *Node
+		cur := leftmost
+		leftmost = nil
+		for cur != nil {
+			prev, leftmost = processChild(cur.Left, prev, leftmost)
+			prev, leftmost = processChild(cur.Right, prev, leftmost)
+			cur = cur.Next
 		}
 	}
 	return root
